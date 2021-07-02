@@ -55,7 +55,7 @@ async def _wait_rabbitmq_setup(config: RabbitmqConfig) -> aiormq.Connection:
     for _ in range(50):
         try:
             connection = await aiormq.connect(config.get_url())
-        except aiormq.connection.AMQPFrameError:
+        except (ConnectionError, aiormq.connection.AMQPFrameError):
             await asyncio.sleep(0.5)
         else:
             return connection
